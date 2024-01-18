@@ -1,0 +1,18 @@
+.emoji-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  gap: 10px;
+  justify-content: center;
+}
+
+.emoji {
+  font-size: 3em;
+  margin: 0.5em;
+  cursor: pointer;
+}
+
+.emoji--selected {
+  background-color: #007bff;
+  color: #fff;
+  border: 2px solid #007bff;
+}

@@ -1,35 +1,40 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { EmojiGrid } from "./emoji-grid";
+import { Size } from "./size-form";
+import { useState, useRef } from "react";
+import { BackgroundGrid } from "./background-grid";
 
-function App() {
-  const [count, setCount] = useState(0)
+import "./app.css";
+
+export function App() {
+  const canvasRef = useRef(null);
+  const [emoji, setEmoji] = useState();
+  const [color, setColor] = useState();
+
+  const generatePlaceholder = ({ width, height }) => {
+    const ctx = canvasRef.current.getContext("2d");
+
+    // bg color
+    ctx.fillStyle = color;
+    ctx.clearRect(0, 0, width, height);
+
+    // text
+    ctx.fillStyle = "#fff";
+    ctx.font = "100px sans-serif";
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+    ctx.fillText(emoji, width / 2, height);
+  };
 
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+    <main>
+      <div className="input">
+        <EmojiGrid selectedEmoji={emoji} onClick={setEmoji} />
+        <BackgroundGrid selectedColor={color} onClick={setColor} />
+        <Size onClick={generatePlaceholder} />
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
+      <div className="output">
+        <canvas ref={canvasRef} style={{ border: "1px solid black" }}></canvas>
       </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    </main>
+  );
 }
-
-export default App
